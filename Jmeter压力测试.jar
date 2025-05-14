@@ -1,0 +1,23 @@
+package repository;
+
+import org.junit.jupiter.api.Test;
+import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
+
+@Testcontainers
+public class StartDatabaseForJMeterTest {
+
+    @Container
+    public static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:15")
+            .withDatabaseName("testdb")
+            .withUsername("testuser")
+            .withPassword("testpass");
+
+    @Test
+    void keepContainerAlive() throws InterruptedException {
+        // 保持容器运行，供 JMeter 测试使用
+        System.out.println("Database URL: " + postgres.getJdbcUrl());
+        Thread.sleep(Long.MAX_VALUE); // 阻止测试结束
+    }
+}
